@@ -1,0 +1,100 @@
+{
+    "name": "Production - Contact Form Handler",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "contact-form",
+                "options": {}
+            },
+            "id": "e4450952-4752-4303-911a-784865181766",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                820,
+                340
+            ],
+            "webhookId": "contact-form"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.emailjs.com/api/v1.0/email/send",
+                "sendBody": true,
+                "contentType": "json",
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "service_id",
+                            "value": "service_5l3312a"
+                        },
+                        {
+                            "name": "template_id",
+                            "value": "template_1690f9c"
+                        },
+                        {
+                            "name": "user_id",
+                            "value": "jpWecBGqLAthfXNL7"
+                        },
+                        {
+                            "name": "template_params",
+                            "value": "={{ $json }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "4b684074-8848-43d8-a87f-e283258c70d4",
+            "name": "Send via EmailJS",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                1040,
+                340
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Email sent successfully\"\n}",
+                "options": {}
+            },
+            "id": "9c105435-08e7-4c4f-9e7f-771485665321",
+            "name": "Respond to Webhook",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                1260,
+                340
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Send via EmailJS",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Send via EmailJS": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    }
+}
