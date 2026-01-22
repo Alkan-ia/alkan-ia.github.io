@@ -33,11 +33,14 @@ const About = () => {
             console.error('EmailJS configuration is missing keys');
             toast({
                 title: "Config Error ⚙️",
-                description: "Faltan las claves de EmailJS. Por favor verifica los secretos en GitHub.",
+                description: "Faltan las claves de configuración. Verifica los secretos en GitHub.",
                 variant: "destructive",
             });
             return;
         }
+
+        console.log('Keys detected, proceeding with submission...'); // Trigger build comment
+
 
         setIsSubmitting(true);
 
